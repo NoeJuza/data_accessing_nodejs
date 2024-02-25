@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style.css">
+    <title>Users Demo</title>
+</head>
+<body>
+    <main>
+        <h1>Users Demo</h1>
+        <button id="getUsers">Get Users</button>
+        <table>
+            <tbody id="usersTable">
+                <tr><th>e-mail</th><th>name</th><th>creation date</th></tr>
+            </tbody>
+        </table>
+        <form action="/users" method="post">
+            <label for="emailInput">E-Mail</label><input id="emailInput" name="email" type="email"><br>
+            <label for="nameInput">Name</label><input id="nameInput" name="name" type="text"><br>
+            <label for="passwordInput">Password</label><input id="passwordInput" name="password" type="password"><br>
+            <button id="submit" type="submit">Submit</button>
+        </form>
+    </main>
+</body>
+<script>
+    const usersTable = document.getElementById("usersTable")
+    document.getElementById("getUsers").addEventListener("click",()=>{
+        fetch("/users").then(res => res.json().then(json =>{
+            console.log(json)
+            const users = json.users
+            users.forEach(user => {
+                const row = usersTable.insertRow(-1);
+                const mailCell = row.insertCell(0)
+                mailCell.innerText = user.mail
+                const nameCell = row.insertCell(1)
+                nameCell.innerText = user.name
+                const creationDateCell = row.insertCell(2)
+                creationDateCell.innerText = user.creationDate
+            });
+        }))
+    })
+</script>
+</html>
